@@ -1,0 +1,48 @@
+{
+  "name": "electric-car-save",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.9.14",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.53",
+    "@react-hook/window-scroll": "^1.0.7",
+    "@react-hook/window-size": "^2.0.5",
+    "@rehooks/component-size": "^1.0.3",
+    "axios": "^0.19.2",
+    "classnames": "^2.2.6",
+    "copy-to-clipboard": "^3.3.1",
+    "formik": "^2.1.1",
+    "formik-material-ui": "^1.0.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "lodash.debounce": "^4.0.8",
+    "next": "9.1.7",
+    "prop-types": "latest",
+    "react": "16.12.0",
+    "react-dom": "16.12.0",
+    "react-ga": "^2.7.0",
+    "reactv16-mailto": "^0.4.4",
+    "recharts": "^2.0.0-beta.1",
+    "swr": "^0.2.2",
+    "yup": "^0.28.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.13",
+    "@types/react": "^16.9.38",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "prettier": "1.19.1"
+  }
+}
