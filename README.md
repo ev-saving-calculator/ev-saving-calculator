@@ -1,5 +1,6 @@
-#EV SAVING CALCULATOR
+# EV SAVING CALCULATOR
 
+Available at [www.electripe.cz](https://www.electripe.cz)
 * React, NodeJS
 * cz/sk version
 * Next.js 
