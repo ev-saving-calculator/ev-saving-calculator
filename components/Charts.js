@@ -1,6 +1,17 @@
 import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Area,
+  AreaChart
+} from 'recharts'
 import {
   getCarbonFootprintCommon,
   getCarbonFootprintElectricWithBattery,
@@ -21,9 +32,12 @@ import fetch from 'isomorphic-unfetch'
 import ShareLinkDialog from './ShareLinkDialog'
 import ShareIcon from '@material-ui/icons/Share'
 import Title from './Title'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
 
-const ContentPriceTooltip = ({ payload, priceUnit }) => {
-  if (payload.length === 0) {
+const ContentPriceTooltipClassic = props => {
+  const { payload, priceUnit } = props
+  if (!payload || payload.length === 0) {
     return null
   }
   return (
@@ -51,8 +65,34 @@ const ContentPriceTooltip = ({ payload, priceUnit }) => {
   )
 }
 
-ContentPriceTooltip.propTypes = {
+ContentPriceTooltipClassic.propTypes = {
   payload: PropTypes.array.isRequired,
+  priceUnit: PropTypes.string.isRequired
+}
+
+const ContentPriceTooltipLayer = props => {
+  const { payload, priceUnit } = props
+  if (!payload || payload.length === 0) {
+    return null
+  }
+  return (
+    <Paper>
+      <Box p={1}>
+        {payload.map(item => (
+          <Box key={item.dataKey} color={item.stroke}>
+            <Typography display="block" variant="p">
+              {item.name}: {(item.value[1] - item.value[0]).toLocaleString()} {priceUnit}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    </Paper>
+  )
+}
+
+ContentPriceTooltipLayer.propTypes = {
+  payload: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired,
   priceUnit: PropTypes.string.isRequired
 }
 
@@ -104,6 +144,11 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       display: 'block'
     }
+  },
+  chartTypeSelect: {
+    [theme.breakpoints.down('xs')]: {
+      marginBottom: theme.spacing(1)
+    }
   }
 }))
 
@@ -113,6 +158,7 @@ const Charts = props => {
   const [loader, setLoader] = useState(false)
   const CalcInfoDialog = props.infoComponent
   const [operationalCosts, setOperationalCosts] = useState(false)
+  const [chartType, setChartType] = useState('classic')
   const [showMoreInfoDialog, setShowMoreInfoDialog] = useState(false)
   const [showCalcInfoDialog, setShowCalInfoDialog] = useState(false)
 
@@ -123,6 +169,7 @@ const Charts = props => {
   const handleCloseShowCalc = () => setShowCalInfoDialog(false)
 
   const handleChangeOperationCosts = e => setOperationalCosts(e.target.checked)
+  const handleChangeChartType = e => setChartType(e.target.value)
 
   const handleClickShare = () => {
     setLoader(true)
@@ -151,11 +198,31 @@ const Charts = props => {
   const data = useMemo(() => {
     const result = []
     for (let i = 0; i <= 30; i++) {
+      const commonCar = getTotalCostCommon(props.versionConfig, props.values, operationalCosts, i)
+      const electricCar = getTotalCostElectric(props.versionConfig, props.values, operationalCosts, i)
       result.push({
         name: `${i}. rok`,
-        'Spalovací automobil': getTotalCostCommon(props.values, operationalCosts, i),
-        Elektromobil: getTotalCostElectric(props.versionConfig, props.values, operationalCosts, i),
-        range: getYearRange(props.values) * i
+        commonCar,
+        electricCar,
+        commonCarComplete: commonCar.complete,
+        electricCarComplete: electricCar.complete,
+        range: getYearRange(props.values) * i,
+        commonCarPrice: [0, commonCar.carPrice],
+        commonCarFuel: [commonCar.carPrice, commonCar.carPrice + commonCar.fuel],
+        commonCarService: [
+          commonCar.carPrice + commonCar.fuel,
+          commonCar.carPrice + commonCar.fuel + commonCar.service
+        ],
+        commonCarOthers: [
+          commonCar.carPrice + commonCar.fuel + commonCar.service,
+          commonCar.carPrice + commonCar.fuel + commonCar.service + commonCar.others
+        ],
+        electricCarPrice: [0, electricCar.carPrice],
+        electricCarElectric: [electricCar.carPrice, electricCar.carPrice + electricCar.electric],
+        electricCarService: [
+          electricCar.carPrice + electricCar.electric,
+          electricCar.carPrice + electricCar.electric + electricCar.service
+        ]
       })
     }
     return result
@@ -167,16 +234,24 @@ const Charts = props => {
       const range = getYearRange(props.values) * i
       result.push({
         name: `${i}. rok`,
-        'Spalovací automobil': Math.round(getCarbonFootprintCommon(props.values, range)),
-        Elektromobil: Math.round(getCarbonFootprintElectricWithBattery(props.versionConfig, props.values, range)),
+        commonCar: Math.round(getCarbonFootprintCommon(props.values, range)),
+        electricCar: Math.round(getCarbonFootprintElectricWithBattery(props.versionConfig, props.values, range)),
         range
       })
     }
     return result
   }, [operationalCosts, props.values])
 
-  const middlePoint = data.findIndex(i => i.Elektromobil - i['Spalovací automobil'] < 0)
-  const middlePointCarbon = dataCarbonFootprint.findIndex(i => i.Elektromobil - i['Spalovací automobil'] < 0)
+  const middlePoint = data.findIndex(i => i.electricCarComplete - i.commonCarComplete < 0)
+  const middlePointCarbon = dataCarbonFootprint.findIndex(i => i.electricCar - i.commonCar < 0)
+
+  const chartParams = {
+    width: 730,
+    height: 250,
+    data: data.slice(0, 11),
+    margin: { top: 5, right: 30, left: 20, bottom: 5 }
+  }
+
   return (
     <div>
       <Title>Náklady</Title>
@@ -184,25 +259,84 @@ const Charts = props => {
         control={<Checkbox checked={operationalCosts} onChange={handleChangeOperationCosts} />}
         label="Zobrazit pouze náklady na provoz"
       />
+      <Select value={chartType} onChange={handleChangeChartType} className={classes.chartTypeSelect}>
+        <MenuItem value="classic">Porovnání</MenuItem>
+        <MenuItem value="layersElectric">Detail - Elektrický vůz (EV)</MenuItem>
+        <MenuItem value="layersCommon">Detail - Spalovací vůz (ICE)</MenuItem>
+      </Select>
+
       <div style={{ height: 240 }}>
-        <ResponsiveContainer>
-          <LineChart
-            width={730}
-            height={250}
-            data={data.slice(0, 11)}
-            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis tickFormatter={tick => tick.toLocaleString()} />
-            <Tooltip
-              content={payload => <ContentPriceTooltip {...payload} priceUnit={props.versionConfig.priceUnit} />}
-              formatter={value => `${value.toLocaleString()} Kg`}
-            />
-            <Legend />
-            <Line type="monotone" dataKey="Spalovací automobil" stroke={red[500]} />
-            <Line type="monotone" dataKey="Elektromobil" stroke={green[500]} />
-          </LineChart>
-        </ResponsiveContainer>
+        {chartType === 'classic' && (
+          <ResponsiveContainer>
+            <LineChart {...chartParams}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis tickFormatter={tick => tick.toLocaleString()} />
+              <Tooltip
+                content={payload => (
+                  <ContentPriceTooltipClassic {...payload} priceUnit={props.versionConfig.priceUnit} />
+                )}
+              />
+              <Legend />
+              <Line type="monotone" dataKey="commonCarComplete" name="Spalovací automobil" stroke={red[500]} />
+              <Line type="monotone" dataKey="electricCarComplete" name="Elektromobil" stroke={green[500]} />
+            </LineChart>
+          </ResponsiveContainer>
+        )}
+        {chartType === 'layersElectric' && (
+          <ResponsiveContainer>
+            <AreaChart {...chartParams}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis tickFormatter={tick => tick.toLocaleString()} />
+              <Tooltip
+                content={payload => (
+                  <ContentPriceTooltipLayer {...payload} type="electric" priceUnit={props.versionConfig.priceUnit} />
+                )}
+              />
+              <Legend />
+              <Area type="monotone" dataKey="electricCarService" name="Servis" stroke="#c51162" fill="#c51162" />
+              <Area type="monotone" dataKey="electricCarElectric" name="Nabíjení" stroke="#4527a0" fill="#4527a0" />
+              {!operationalCosts && (
+                <Area
+                  type="monotone"
+                  dataKey="electricCarPrice"
+                  name="Pořizovací cena"
+                  stroke="#006064"
+                  fill="#006064"
+                />
+              )}
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
+        {chartType === 'layersCommon' && (
+          <ResponsiveContainer>
+            <AreaChart {...chartParams}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis tickFormatter={tick => tick.toLocaleString()} />
+              <Tooltip
+                content={payload => (
+                  <ContentPriceTooltipLayer {...payload} type="common" priceUnit={props.versionConfig.priceUnit} />
+                )}
+              />
+              <Legend />
+
+              <Area
+                type="monotone"
+                dataKey="commonCarOthers"
+                name="Silniční daň, dálniční známka, parkování"
+                stroke="#ff9100"
+                fill="#ff9100"
+              />
+              <Area type="monotone" dataKey="commonCarService" name="Servis" stroke="#c51162" fill="#c51162" />
+              <Area type="monotone" dataKey="commonCarFuel" name="Palivo" stroke="#4527a0" fill="#4527a0" />
+              {!operationalCosts && (
+                <Area type="monotone" dataKey="commonCarPrice" name="Pořizovací cena" stroke="#006064" fill="#006064" />
+              )}
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
       {middlePoint !== -1 && !operationalCosts && (
@@ -239,13 +373,10 @@ const Charts = props => {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis tickFormatter={tick => tick.toLocaleString()} />
-                <Tooltip
-                  content={payload => <ContentCarbonTooltip {...payload} />}
-                  formatter={value => `${value.toLocaleString()} K`}
-                />
+                <Tooltip content={payload => <ContentCarbonTooltip {...payload} />} />
                 <Legend />
-                <Line type="monotone" dataKey="Spalovací automobil" stroke={red[500]} />
-                <Line type="monotone" dataKey="Elektromobil" stroke={green[500]} />
+                <Line type="monotone" dataKey="commonCar" name="Spalovací automobil" stroke={red[500]} />
+                <Line type="monotone" dataKey="electricCar" name="Elektromobil" stroke={green[500]} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -285,7 +416,12 @@ const Charts = props => {
           {loader ? 'Zpracovávání' : 'Sdílet konfiguraci'}
         </Button>
       </Typography>
-      <CalcInfoDialog open={showCalcInfoDialog} onClose={handleCloseShowCalc} values={props.values} renderCo2Info={props.renderCo2Info} />
+      <CalcInfoDialog
+        open={showCalcInfoDialog}
+        onClose={handleCloseShowCalc}
+        values={props.values}
+        renderCo2Info={props.renderCo2Info}
+      />
       <MoreInformationDialog open={showMoreInfoDialog} onClose={handleCloseShowMore} />
       <ShareLinkDialog open={shareUrl} url={shareUrl} onClose={() => setShareUrl(false)} />
     </div>

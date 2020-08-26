@@ -30,6 +30,9 @@ const CalcInfoDialog = props => {
           <Typography variant="body1" gutterBottom>
             Emise při přepravě pohonné hmoty jsou čerpány ze studie <Link target="_blank" rel="noopener noreferrer" href="https://ec.europa.eu/jrc/sites/jrcsh/files/wtw_app_1_v4a_march_2014_final.pdf">WELL-TO-WHEELS Appendix 1 - Version 4.a</Link>.
           </Typography>
+          <Typography variant="body1" gutterBottom>
+            Ceník pro parkování v Praze je k dispozici na stránce <Link target="_blank" rel="noopener noreferrer" href="https://parkujvklidu.cz/wp-content/uploads/2017/07/cen%c3%adk_ZPS_2017_a_oblasti.pdf">https://parkujvklidu.cz</Link>.
+          </Typography>
           {props.values.compareCarbonFootprint && (
             <>
               <Typography variant="body1">

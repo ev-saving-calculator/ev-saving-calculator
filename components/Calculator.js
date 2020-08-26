@@ -129,6 +129,7 @@ const Calculator = props => {
 
   const versionConfig = version[props.versionId]
 
+
   return (
     <div>
       <Head>

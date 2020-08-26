@@ -1,6 +1,7 @@
 import payments from '../data/paymentsCz.js'
 import { serviceInputsCommon, serviceInputsElectric } from '../data/serviceItems'
 import carItems from '../data/cars.js'
+
 const WEEKS_IN_YEAR = 52
 const MONTHS_IN_YEAR = 12
 
@@ -89,8 +90,14 @@ export const getTotalCostElectric = (versionConfig, values, operationalCosts, ye
     .filter(i => i.distance > 0 && i.price > 0)
     .map(serviceItem => Math.floor((distancePerYear * years) / serviceItem.distance) * serviceItem.price)
 
-  const price = carPrice + years * electricPrice + powerStationPrice + sum(servicePrice) + sum(serviceCustomPrice)
-  return Math.round(price)
+  const complete = carPrice + years * electricPrice + powerStationPrice + sum(servicePrice) + sum(serviceCustomPrice)
+
+  return {
+    complete,
+    carPrice: carPrice,
+    electric: years * electricPrice + powerStationPrice,
+    service: sum(servicePrice) + sum(serviceCustomPrice)
+  }
 }
 
 export const getCarPriceWithGrant = (price, grant, vat, vatValue) => {
@@ -100,13 +107,23 @@ export const getCarPriceWithGrant = (price, grant, vat, vatValue) => {
 
 export const getRoadTax = (engineCapacity, years) => {
   let sum = 0
-  for (let i = 0; i < years; i++) {
+  for (let i = 0; i <= years; i++) {
     sum += payments.roadTax[engineCapacity] * (1 - payments.roadTaxSales[i])
   }
   return sum
 }
 
-export const getTotalCostCommon = (values, operationalCosts, years) => {
+const getpragueParkingPrice = (versionConfig, value, vat, years) => {
+  const item = versionConfig.pragueParking.find(i => i.id === value)
+  if (item) {
+    return item.price * (years + 1)
+    // return vat ? item.price : priceWithoutVat(item.price)
+  } else {
+    return 0
+  }
+}
+
+export const getTotalCostCommon = (versionConfig, values, operationalCosts, years) => {
   const {
     purchasePrice,
     fuelPrice,
@@ -120,7 +137,9 @@ export const getTotalCostCommon = (values, operationalCosts, years) => {
     company,
     distanceType,
     distance,
-    serviceCommon
+    pragueParking,
+    serviceCommon,
+    vat
   } = values
   const distancePerYear = getYearRange({
     additionalRange,
@@ -130,9 +149,10 @@ export const getTotalCostCommon = (values, operationalCosts, years) => {
     distance
   })
   const fuelPricePerYear = (fuelPrice * distancePerYear * consumption) / 100
-  const tollPrice = toll ? payments.toll : 0
+  const tollPrice = toll ? payments.toll * (years + 1) : 0
   const roadTaxPrice = roadTax && company ? getRoadTax(engineCapacity, years) : 0
-  const pricePerYear = fuelPricePerYear + tollPrice
+  const pragueParkingPrice = pragueParking ? getpragueParkingPrice(versionConfig, pragueParking, vat, years) : 0
+  const pricePerYear = fuelPricePerYear
   const carPrice = operationalCosts ? 0 : purchasePrice
 
   const servicePrice = serviceInputsCommon
@@ -147,8 +167,22 @@ export const getTotalCostCommon = (values, operationalCosts, years) => {
     .filter(i => i.distance > 0 && i.price > 0)
     .map(serviceItem => Math.floor((distancePerYear * years) / serviceItem.distance) * serviceItem.price)
 
-  const price = carPrice + pricePerYear * years + sum(servicePrice) + sum(serviceCustomPrice)
-  return price + roadTaxPrice
+  const price =
+    carPrice +
+    pricePerYear * years +
+    sum(servicePrice) +
+    sum(serviceCustomPrice) +
+    roadTaxPrice +
+    pragueParkingPrice +
+    tollPrice
+
+  return {
+    complete: price,
+    carPrice,
+    fuel: pricePerYear * years,
+    others: roadTaxPrice + pragueParkingPrice + tollPrice,
+    service: sum(servicePrice) + sum(serviceCustomPrice)
+  }
 }
 
 export const getPricePerKmCommon = values => {
@@ -200,7 +234,9 @@ export const maxGrantCarPrice = 1250000
 export const minGrantPrice = 250000
 
 export const getCar2 = (values, versionConfig) => {
-  return !values.carId ? 0 : getCarByIds2(values.carId) || recalculateCustomCarPrice(versionConfig.vat, values.customCar)
+  return !values.carId
+    ? 0
+    : getCarByIds2(values.carId) || recalculateCustomCarPrice(versionConfig.vat, values.customCar)
 }
 
 export const grantOverflow = (versionConfig, values) => {

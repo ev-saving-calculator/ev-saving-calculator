@@ -160,7 +160,7 @@ const ServiceItemsForm = ({ values, priceUnit, items, id, customId }) => {
 
 ServiceItemsForm.propTypes = {
   id: PropTypes.string.isRequired,
-  customId: PropTypes.string.isRequired,
+  customId: PropTypes.array.isRequired,
   items: PropTypes.array.isRequired,
   values: PropTypes.object.isRequired,
   priceUnit: PropTypes.string.isRequired

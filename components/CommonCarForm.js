@@ -20,6 +20,9 @@ const useStyles = makeStyles(theme => ({
   },
   serviceInput: {
     width: 240
+  },
+  pragueParkingPrice: {
+    marginRight: theme.spacing(1)
   }
 }))
 
@@ -44,6 +47,7 @@ const emissionFuelTransport = [
 const CommonCarForm = props => {
   const classes = useStyles()
   const { values, versionConfig } = props
+  const { pragueParking } = versionConfig
   return (
     <>
       <Grid item xs={12}>
@@ -61,6 +65,30 @@ const CommonCarForm = props => {
           />
         )}
       </Grid>
+      {pragueParking && (
+        <Grid item xs={12}>
+          <Field
+            size="small"
+            disabled={false}
+            select
+            label="Parkování v praze (roční)"
+            variant="outlined"
+            name={'pragueParking'}
+            fullWidth
+            component={TextField}>
+            <MenuItem value={0}>Žádné</MenuItem>
+            {pragueParking.map(option => (
+              <MenuItem key={option.id} value={option.id}>
+                {option.name}
+                <b className={classes.pragueParkingPrice}>
+                  {option.price.toLocaleString()} {versionConfig.priceUnit}
+                </b>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Field>
+        </Grid>
+      )}
       <Grid container item spacing={1}>
         <Grid item>
           <Field
@@ -84,7 +112,7 @@ const CommonCarForm = props => {
               disabled={false}
               select
               className={classes.serviceInput}
-              label="Objem motoru"
+              label="Objem motoru (silniční daň)"
               variant="outlined"
               name={'engineCapacity'}
               component={TextField}>

@@ -30,8 +30,9 @@ const Form = props => {
         serviceCommonCustom: [],
         co2Emission: 120,
         co2EmissionFuelTransport: '19',
+        pragueParking: 0,
         ...versionConfig.defaultValues,
-        ...props.defaultValues
+        ...props.defaultValues,
       }}
       validationSchema={Yup.object({
         workingDays: Yup.number()
