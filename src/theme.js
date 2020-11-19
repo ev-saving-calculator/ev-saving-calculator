@@ -1,16 +1,18 @@
 import { createMuiTheme } from '@material-ui/core/styles'
-import { blue, red } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 import grey from '@material-ui/core/colors/grey'
+
+const fDriveOrange = '#f15635'
 
 // Create a theme instance.
 const theme = createMuiTheme({
   palette: {
     // type: 'dark'
     primary: {
-      main: blue[600]
+      main: fDriveOrange
     },
     error: {
-      main: red.A400
+      main: blue[600]
     },
     background: {
       default: grey[200]
@@ -19,7 +21,7 @@ const theme = createMuiTheme({
   typography: {
     h6: {
       fontWeight: 400,
-      color: blue[600]
+      color: fDriveOrange
     }
   }
 })

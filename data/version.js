@@ -1,16 +1,12 @@
 import { serviceInputsCommon, serviceInputsElectric } from './serviceItems'
 
-const getServiceDefaultValues = (serviceInputs, priceId) => {
-  const values = {}
-  serviceInputs.forEach(item => {
-    values[item.id] = {
-      distance: item.defaultDistance,
-      price: item.defaultPrice[priceId],
-      active: true
-    }
-  })
-  return values
-}
+const getServiceDefaultValues = (serviceInputs, priceId) =>
+  serviceInputs.map(item => ({
+    name: item.label,
+    distance: item.defaultDistance,
+    price: item.defaultPrice[priceId],
+    period: item.defaultPeriod
+  }))
 
 export default {
   cz: {
@@ -65,7 +61,7 @@ export default {
     defaultValues: {
       grant: 30,
       enableGrant: false,
-      purchasePrice: 900000,
+      purchasePrice: 700000,
       fuelPrice: 31,
       additionalRange: 30,
       roadTax: false,

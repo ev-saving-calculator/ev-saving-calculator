@@ -178,8 +178,7 @@ const ElectricCarForm = props => {
                   <MenuItem key={option.id} value={option.id}>
                     {option.label}
                     <span className={classes.grantPrice}>
-                      {getGrantPrice(versionConfig, values, option.id).toLocaleString()}{' '}
-                      {versionConfig.priceUnit}
+                      {getGrantPrice(versionConfig, values, option.id).toLocaleString()} {versionConfig.priceUnit}
                     </span>
                   </MenuItem>
                 ))}
@@ -211,9 +210,7 @@ const ElectricCarForm = props => {
         <ServiceItemsForm
           values={values}
           priceUnit={versionConfig.priceUnit}
-          items={serviceInputsElectric}
           id="serviceElectric"
-          customId="serviceElectricCustom"
         />
       </Grid>
       <ChargingForm
@@ -223,14 +220,16 @@ const ElectricCarForm = props => {
         errors={errors}
         versionConfig={versionConfig}
       />
-      {values.carId && <Grid item>
-        <Typography display={'block'} variant="subtitle1" component="h2">
-          Cena za ujetý km včetně nabíjení{' '}
-          <b>
-            {getPricePerKmElectric(values, versionConfig).toLocaleString()} {versionConfig.priceUnit}
-          </b>
-        </Typography>
-      </Grid>}
+      {values.carId && (
+        <Grid item>
+          <Typography display={'block'} variant="subtitle1" component="h2">
+            Cena za ujetý km včetně nabíjení{' '}
+            <b>
+              {getPricePerKmElectric(values, versionConfig).toLocaleString()} {versionConfig.priceUnit}
+            </b>
+          </Typography>
+        </Grid>
+      )}
       <Dialog open={showCustomCar} onClose={() => setShowCustomCar(false)}>
         <DialogTitle>Vlastní parametry</DialogTitle>
         <DialogContent>

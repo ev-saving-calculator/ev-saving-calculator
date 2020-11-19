@@ -21,6 +21,7 @@ export const serviceInputsCommon = [
     id: 'oil',
     label: 'Olej a filtr',
     defaultDistance: 15000,
+    defaultPeriod: 1,
     defaultPrice: {
       czk: 4000,
       eur: 140

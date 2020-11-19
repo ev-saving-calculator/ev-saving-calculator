@@ -1,5 +1,35 @@
 export default [
   {
+    label: 'Skoda Enyaq iV',
+    id: 'enyaq',
+    image: 'cars/enyaq.jpg',
+    items: [
+      {
+        label: 'Skoda Enyaq iV 60',
+        id: 'enyaq-60',
+        price: {
+          czk: 1059900,
+          eur: 38850
+        },
+        efficiency: 18.1,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1279/Skoda-Enyaq-iV-60',
+      },{
+        label: 'Skoda Enyaq iV 80',
+        id: 'enyaq-80',
+        price: {
+          czk: 1189900,
+          eur: 43950
+        },
+        efficiency: 18.3,
+        battery: 82,
+        usableBattery: 77,
+        url: 'https://ev-database.org/car/1280/Skoda-Enyaq-iV-80',
+      }
+    ]
+  },
+  {
     label: 'Tesla Model 3',
     id: 'model_3',
     image: 'cars/model_3.jpg',
@@ -416,5 +446,30 @@ export default [
         label: 'Kia e-Soul 150 kW'
       }
     ]
+  },
+  {
+    label: 'Honda e',
+    id: 'honda-e',
+    image: 'cars/honda-e.jpg',
+    price: {
+      czk: 899900,
+      eur: 34990
+    },
+    efficiency: 16.8,
+    battery: 35.5,
+    usableBattery: 28.5,
+    url: 'https://ev-database.org/car/1171/Honda-e'
+  }, {
+    label: 'Peugeot e-208',
+    id: 'peugeot e208',
+    image: 'cars/e-208.jpg',
+    price: {
+      czk: 820000,
+      eur: 28990
+    },
+    efficiency: 16.4,
+    battery: 50.0,
+    usableBattery: 45.0,
+    url: 'https://ev-database.org/car/1168/Peugeot-e-208'
   }
 ]

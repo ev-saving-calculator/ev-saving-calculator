@@ -27,7 +27,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     marginTop: theme.spacing(2),
     // padding: `${theme.spacing(3)}px ${theme.spacing(2)}px`,
-    maxWidth: MAX_WIDTH
+    maxWidth: MAX_WIDTH,
+    [theme.breakpoints.down(MAX_WIDTH)]: {
+      maxWidth: '100%'
+    }
   },
   '@global': {
     body: {
@@ -157,15 +160,14 @@ const Calculator = props => {
       </AppBar>
       <Container maxWidth={'xl'} classes={{ root: classes.root }}>
         <Grid container spacing={2}>
-          <Grid item md={6}>
-            <Paper className={classes.paper}>
+          <Grid item md={6} xs={12}>
+            <Paper className={classes.paper} square>
               <Form
                 co2default={437}
                 vat={21}
                 onSubmit={handleSubmitForm}
                 grant
                 defaultValues={props.shareValues || {}}
-                defaultt
                 versionConfig={versionConfig}
                 renderRegionInfo={props.renderRegionInfo}
               />
@@ -174,7 +176,7 @@ const Calculator = props => {
           <Grid item md={6} xs={12}>
             <div ref={ref} className={cn(enableSticky && classes.paperSticky)}>
               {values && values.carId && (
-                <Paper className={cn(classes.paper)}>
+                <Paper className={cn(classes.paper)} square>
                   <Charts infoComponent={CalcInfoDialog} renderCo2Info={props.renderCo2Info}  vat={21} values={values} versionConfig={versionConfig} />
                 </Paper>
               )}

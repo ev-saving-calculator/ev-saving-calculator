@@ -30,21 +30,12 @@ const FixFields = props => {
           recalculatePrice(item.value, false).toFixed(item.type === 'kwh' ? 2 : 0)
         )
       })
-      // service
-      serviceInputsCommon.forEach(serviceInput => {
-        const value = values.serviceCommon[serviceInput.id].price
-        setFieldValue(`serviceCommon.${serviceInput.id}.price`, recalculatePrice(value))
-      })
-      serviceInputsElectric.forEach(serviceInput => {
-        const value = values.serviceCommon[serviceInput.id].price
-        setFieldValue(`serviceElectric.${serviceInput.id}.price`, recalculatePrice(value))
-      })
       // custom service
-      values.serviceElectricCustom.forEach((serviceInput, index) => {
-        setFieldValue(`serviceElectricCustom.${index}.price`, recalculatePrice(serviceInput.price))
+      values.serviceElectric.forEach((serviceInput, index) => {
+        setFieldValue(`serviceElectric.${index}.price`, recalculatePrice(serviceInput.price))
       })
-      values.serviceCommonCustom.forEach((serviceInput, index) => {
-        setFieldValue(`serviceCommonCustom.${index}.price`, recalculatePrice(serviceInput.price))
+      values.serviceCommon.forEach((serviceInput, index) => {
+        setFieldValue(`serviceCommon.${index}.price`, recalculatePrice(serviceInput.price))
       })
       // payments
       priceItems.forEach(name => {

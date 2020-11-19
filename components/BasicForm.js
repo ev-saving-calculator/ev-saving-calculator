@@ -28,7 +28,7 @@ const BasicForm = props => {
       <Grid item>
         <FormControlLabel
           control={<Field disabled={false} name="compareCarbonFootprint" color="primary" component={Checkbox} />}
-          label="Porovnat uhlíkovou stopu"
+          label="Porovnat uhlíkovou stopu (orientační)"
         />
         <FormControlLabel
           control={<Field disabled={false} name="company" color="primary" component={Checkbox} />}

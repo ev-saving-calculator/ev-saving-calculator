@@ -15,10 +15,9 @@ const Form = props => {
   return (
     <Formik
       initialValues={{
-        compareCarbonFootprint: true,
+        compareCarbonFootprint: false,
         company: false,
-        //carId: null,
-        carId: ['model_3', 't3_range_plus'],
+        carId: ['enyaq', 'enyaq-60'], //['model_3', 't3_range_plus'],
         consumption: 7,
         distanceToWork: 50,
         workingDays: 5,
@@ -32,7 +31,7 @@ const Form = props => {
         co2EmissionFuelTransport: '19',
         pragueParking: 0,
         ...versionConfig.defaultValues,
-        ...props.defaultValues,
+        ...props.defaultValues
       }}
       validationSchema={Yup.object({
         workingDays: Yup.number()

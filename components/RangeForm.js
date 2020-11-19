@@ -9,11 +9,9 @@ import Radio from '@material-ui/core/Radio'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import { getYearRange } from '../src/utils'
 import makeStyles from '@material-ui/core/styles/makeStyles'
+import Title from './Title'
 
 const useStyles = makeStyles(theme => ({
-  title: {
-    borderBottom: '1px solid'
-  },
   distanceInput: {
     width: 157
   },
@@ -27,15 +25,7 @@ const RangeForm = ({ values }) => {
   return (
     <>
       <Grid item>
-        <Typography
-          className={classes.labelOffset}
-          display={'block'}
-          gutterBottom
-          variant="h6"
-          component="h2"
-          classes={{ root: classes.title }}>
-          Nájezd
-        </Typography>
+        <Title>Nájezd</Title>
         <Field name="distanceType" component={RadioGroup}>
           <Grid container spacing={2}>
             <Grid item>

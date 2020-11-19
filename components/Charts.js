@@ -34,6 +34,8 @@ import ShareIcon from '@material-ui/icons/Share'
 import Title from './Title'
 import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
+import Grid from '@material-ui/core/Grid'
+import PriceDetailDialog from './PriceDetailDialog'
 
 const ContentPriceTooltipClassic = props => {
   const { payload, priceUnit } = props
@@ -46,7 +48,7 @@ const ContentPriceTooltipClassic = props => {
         {payload.map(item => (
           <Box key={item.dataKey} color={item.stroke}>
             <Typography display="block" variant="p">
-              {item.dataKey}: {item.value.toLocaleString()} {priceUnit}
+              {item.name}: {item.value.toLocaleString()} {priceUnit}
             </Typography>
           </Box>
         ))}
@@ -155,6 +157,7 @@ const useStyles = makeStyles(theme => ({
 const Charts = props => {
   const classes = useStyles()
   const [shareUrl, setShareUrl] = useState(null)
+  const [detail, setDetail] = useState(null)
   const [loader, setLoader] = useState(false)
   const CalcInfoDialog = props.infoComponent
   const [operationalCosts, setOperationalCosts] = useState(false)
@@ -171,6 +174,8 @@ const Charts = props => {
   const handleChangeOperationCosts = e => setOperationalCosts(e.target.checked)
   const handleChangeChartType = e => setChartType(e.target.value)
 
+  const handleClosePriceDialog = () => setDetail(false)
+
   const handleClickShare = () => {
     setLoader(true)
     fetch('https://us-central1-electripe-746b0.cloudfunctions.net/setData', {
@@ -185,7 +190,6 @@ const Charts = props => {
         return r.text()
       })
       .then(id => {
-        console.log(id)
         setShareUrl(`${window.location.origin + window.location.pathname}?s=${id}`)
       })
       .catch(() => {
@@ -222,7 +226,9 @@ const Charts = props => {
         electricCarService: [
           electricCar.carPrice + electricCar.electric,
           electricCar.carPrice + electricCar.electric + electricCar.service
-        ]
+        ],
+        allItemsElectric: electricCar.allItems,
+        allItemsCommon: commonCar.allItems,
       })
     }
     return result
@@ -245,6 +251,10 @@ const Charts = props => {
   const middlePoint = data.findIndex(i => i.electricCarComplete - i.commonCarComplete < 0)
   const middlePointCarbon = dataCarbonFootprint.findIndex(i => i.electricCar - i.commonCar < 0)
 
+  const handleOpenPriceDialog = () => {
+    setDetail(data[10].allItemsElectric)
+  }
+
   const chartParams = {
     width: 730,
     height: 250,
@@ -255,15 +265,26 @@ const Charts = props => {
   return (
     <div>
       <Title>Náklady</Title>
-      <FormControlLabel
-        control={<Checkbox checked={operationalCosts} onChange={handleChangeOperationCosts} />}
-        label="Zobrazit pouze náklady na provoz"
-      />
-      <Select value={chartType} onChange={handleChangeChartType} className={classes.chartTypeSelect}>
-        <MenuItem value="classic">Porovnání</MenuItem>
-        <MenuItem value="layersElectric">Detail - Elektrický vůz (EV)</MenuItem>
-        <MenuItem value="layersCommon">Detail - Spalovací vůz (ICE)</MenuItem>
-      </Select>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item>
+          <FormControlLabel
+            control={<Checkbox checked={operationalCosts} color="primary" onChange={handleChangeOperationCosts} />}
+            label="Pouze náklady na provoz"
+          />
+        </Grid>
+        <Grid item xs>
+          <Select value={chartType} onChange={handleChangeChartType} className={classes.chartTypeSelect}>
+            <MenuItem value="classic">Porovnání</MenuItem>
+            <MenuItem value="layersElectric">Detail - Elektrický vůz (EV)</MenuItem>
+            <MenuItem value="layersCommon">Detail - Spalovací vůz (ICE)</MenuItem>
+          </Select>
+        </Grid>
+        <Grid item>
+          <Button variant="outlined" size="small" onClick={handleOpenPriceDialog}>
+            Detail
+          </Button>
+        </Grid>
+      </Grid>
 
       <div style={{ height: 240 }}>
         {chartType === 'classic' && (
@@ -283,6 +304,7 @@ const Charts = props => {
             </LineChart>
           </ResponsiveContainer>
         )}
+
         {chartType === 'layersElectric' && (
           <ResponsiveContainer>
             <AreaChart {...chartParams}>
@@ -424,6 +446,12 @@ const Charts = props => {
       />
       <MoreInformationDialog open={showMoreInfoDialog} onClose={handleCloseShowMore} />
       <ShareLinkDialog open={shareUrl} url={shareUrl} onClose={() => setShareUrl(false)} />
+      <PriceDetailDialog
+        data={data}
+        onClose={handleClosePriceDialog}
+        open={detail}
+        priceUnit={props.versionConfig.priceUnit}
+      />
     </div>
   )
 }
