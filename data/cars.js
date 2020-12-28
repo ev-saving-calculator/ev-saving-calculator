@@ -14,8 +14,9 @@ export default [
         efficiency: 18.1,
         battery: 62,
         usableBattery: 58,
-        url: 'https://ev-database.org/car/1279/Skoda-Enyaq-iV-60',
-      },{
+        url: 'https://ev-database.org/car/1279/Skoda-Enyaq-iV-60'
+      },
+      {
         label: 'Skoda Enyaq iV 80',
         id: 'enyaq-80',
         price: {
@@ -25,7 +26,98 @@ export default [
         efficiency: 18.3,
         battery: 82,
         usableBattery: 77,
-        url: 'https://ev-database.org/car/1280/Skoda-Enyaq-iV-80',
+        url: 'https://ev-database.org/car/1280/Skoda-Enyaq-iV-80'
+      }
+    ]
+  },
+  {
+    label: 'Volkswagen ID.3',
+    id: 'id3',
+    image: 'cars/id3.jpg',
+    items: [
+      {
+        id: 'volkswagen-id3-life',
+        price: {
+          czk: 976900,
+          eur: 37610
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Life'
+      },
+      {
+        id: 'volkswagen-id3-style',
+        price: {
+          czk: 1097900,
+          eur: 40740
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Style'
+      },
+      {
+        id: 'volkswagen-id3-business',
+        price: {
+          czk: 1068900,
+          eur: 41080
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Business'
+      },
+      {
+        id: 'volkswagen-id3-family',
+        price: {
+          czk: 1095900,
+          eur: 42090
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Family'
+      },
+      {
+        id: 'volkswagen-id3-tech',
+        price: {
+          czk: 1177900,
+          eur: 43760
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Tech'
+      },
+      {
+        id: 'volkswagen-id3-max',
+        price: {
+          czk: 1235900,
+          eur: 45980
+        },
+        efficiency: 16.6,
+        battery: 62,
+        usableBattery: 58,
+        url: 'https://ev-database.org/car/1300/Volkswagen-ID3-1st',
+        label: 'Volkswagen ID.3 Max'
+      },
+      {
+        id: 'volkswagen-id3-tour',
+        price: {
+          czk: 1231900,
+          eur: 47060
+        },
+        efficiency: 17.1,
+        battery: 82,
+        usableBattery: 77,
+        url: 'https://ev-database.org/car/1203/Volkswagen-ID3-Pro-S',
+        label: 'Volkswagen ID.3 Tour'
       }
     ]
   },
@@ -39,7 +131,7 @@ export default [
         label: 'Tesla Model 3 Standard Range Plus',
         efficiency: 15.1,
         price: {
-          czk: 1300200,
+          czk: 1324900,
           eur: 39500
         },
         battery: 50,
@@ -51,7 +143,7 @@ export default [
         label: 'Tesla Model 3 Long Range Dual Motor',
         efficiency: 15.8,
         price: {
-          czk: 1500200,
+          czk: 1486990,
           eur: 48200
         },
         battery: 75,
@@ -96,7 +188,7 @@ export default [
           average: 525
         },
         price: {
-          czk: 2271200,
+          czk: 2318990,
           eur: 72600
         },
         battery: 100,
@@ -122,7 +214,7 @@ export default [
           average: 510
         },
         price: {
-          czk: 2739200,
+          czk: 2786990,
           eur: 85700
         },
         battery: 100,
@@ -155,7 +247,7 @@ export default [
           average: 460
         },
         price: {
-          czk: 2458200,
+          czk: 2589990,
           eur: 77700
         },
         battery: 100,
@@ -181,7 +273,7 @@ export default [
           average: 445
         },
         price: {
-          czk: 2926200,
+          czk: 3057990,
           eur: 89600
         },
         battery: 100,
@@ -220,14 +312,17 @@ export default [
     label: 'Hyundai IONIQ Electric',
     id: 'ioniq',
     image: 'cars/ioniq.jpg',
-    price: 899990,
-    efficiency: 16.2,
+    price: {
+      czk: 949990,
+      eur: 35990
+    },
+    url: 'https://ev-database.org/car/1165/Hyundai-IONIQ-Electric',
+    efficiency: 15.3,
     battery: 38.3,
-    usableBattery: 38.3,
-    url: 'https://ev-database.org/car/1190/Skoda-CITIGOe-iV'
+    usableBattery: 40.4
   },
   {
-    label: 'Hyundai  KONA Electric',
+    label: 'Hyundai KONA Electric',
     id: 'kona',
     image: 'cars/kona.jpg',
     items: [
@@ -246,7 +341,7 @@ export default [
       {
         id: 'kona-150',
         price: {
-          czk: 999990,
+          czk: 949990,
           eur: 39890
         },
         efficiency: 15.8,
@@ -459,7 +554,8 @@ export default [
     battery: 35.5,
     usableBattery: 28.5,
     url: 'https://ev-database.org/car/1171/Honda-e'
-  }, {
+  },
+  {
     label: 'Peugeot e-208',
     id: 'peugeot e208',
     image: 'cars/e-208.jpg',

@@ -21,6 +21,21 @@ export default class MyDocument extends Document {
             lang="cs"
           />
           <meta name="description" content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem." />
+
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://electripe.cz/" />
+          <meta property="og:title" content="Vyplatí se mi elektromobil?" />
+          <meta property="og:description" content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem." />
+          <meta property="og:image" content="" />
+
+          <meta property="twitter:card" content="summary_large_image" />
+          <meta property="twitter:url" content="https://electripe.cz/" />
+          <meta property="twitter:title" content="Vyplatí se mi elektromobil?" />
+          <meta
+            property="twitter:description"
+            content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem."
+          />
+          <meta property="twitter:image" content="" />
         </Head>
         <body>
           <Main />

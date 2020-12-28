@@ -45,8 +45,8 @@ const AboutDialog = props => {
           </Typography>
           <Typography variant="body1">
             Autorem je Petr Pololáník - milovník elektromobility a moderních technologií. Aplikaci vytvořil ve svém
-            volném čase a bez záměru výdělku. Elektromobil zatím sám nemá, ale plánuje si ho v blízké době pořídí. Přeje
-            si, aby aplikace pomohla v rozhodování, zda si pořídit elektromobil a nebo nikoliv.
+            volném čase a bez záměru výdělku. Elektromobil zatím sám nemá, ale plánuje si ho v blízké době pořídit.
+            Přeje si, aby aplikace pomohla v rozhodování, zda si pořídit elektromobil a nebo nikoliv.
           </Typography>
           <div className={classes.links}>
             <Button
