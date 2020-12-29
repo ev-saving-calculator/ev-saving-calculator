@@ -100,7 +100,7 @@ const CarItems = props => {
           className={classes.image}
           onClick={() => props.onSelect(item)}
           style={{
-            width: 'calc(100% / 4)'
+            width: 'calc(100% / 5)'
           }}>
           <span
             className={classes.imageSrc}

@@ -154,12 +154,12 @@ const ElectricCarForm = props => {
               control={<Field name="enableGrant" disabled={false} color="primary" component={Checkbox} />}
               label={
                 <span>
-                  Využiji dotaci na nákup. Více informací na{' '}
+                  Využiji dotaci na nákup (bylo možné do 31. 7. 2020). Více informací na{' '}
                   <Link
                     target="_blank"
                     href="https://www.mpo.cz/cz/podnikani/dotace-a-podpora-podnikani/oppik-2014-2020/vyzvy-op-pik-2019/nizkouhlikove-technologie---elektromobilita---v--vyzva--251085/">
                     www.mpo.cz
-                  </Link>
+                  </Link>. V současné době žádná výzva není.
                 </span>
               }
             />

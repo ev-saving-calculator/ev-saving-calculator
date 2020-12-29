@@ -122,6 +122,19 @@ export default [
     ]
   },
   {
+    label: 'Volkswagen ID.4',
+    id: 'id4',
+    image: 'cars/id4.jpg',
+    price: {
+      czk: 1167900,
+      eur: 45660
+    },
+    url: 'https://ev-database.org/car/1273/Volkswagen-ID4-1st',
+    efficiency: 19.3,
+    battery: 77,
+    usableBattery: 82
+  },
+  {
     label: 'Tesla Model 3',
     id: 'model_3',
     image: 'cars/model_3.jpg',
@@ -129,38 +142,38 @@ export default [
       {
         id: 't3_range_plus',
         label: 'Tesla Model 3 Standard Range Plus',
-        efficiency: 15.1,
+        efficiency: 15.2,
         price: {
           czk: 1324900,
           eur: 39500
         },
-        battery: 50,
-        usableBattery: 47.5,
-        url: 'https://ev-database.org/car/1177/Tesla-Model-3-Standard-Range-Plus'
+        battery: 55,
+        usableBattery: 50,
+        url: 'https://ev-database.org/car/1320/Tesla-Model-3-Standard-Range-Plus'
       },
       {
         id: 't3_long_range',
         label: 'Tesla Model 3 Long Range Dual Motor',
-        efficiency: 15.8,
+        efficiency: 15.6,
         price: {
           czk: 1486990,
           eur: 48200
         },
-        battery: 75,
-        usableBattery: 72.5,
-        url: 'https://ev-database.org/car/1138/Tesla-Model-3-Long-Range-Dual-Motor'
+        battery: 78,
+        usableBattery: 73.5,
+        url: 'https://ev-database.org/car/1321/Tesla-Model-3-Long-Range-Dual-Motor'
       },
       {
         id: 't3_long_range_performance',
         label: 'Tesla Model 3 Long Range Performance',
-        efficiency: 16.3,
+        efficiency: 16.2,
         price: {
           czk: 1700200,
           eur: 52900
         },
-        battery: 75,
-        usableBattery: 72.5,
-        url: 'https://ev-database.org/car/1139/Tesla-Model-3-Long-Range-Performance'
+        battery: 78,
+        usableBattery: 73.5,
+        url: 'https://ev-database.org/car/1322/Tesla-Model-3-Long-Range-Performance'
       }
     ]
   },
@@ -173,7 +186,7 @@ export default [
         id: 'ts_long_range',
         label: 'Tesla Model S Long range',
         category: 'model_s',
-        efficiency: 18.1,
+        efficiency: 17.6,
         range: {
           cold: {
             city: 505,
@@ -193,13 +206,13 @@ export default [
         },
         battery: 100,
         usableBattery: 95,
-        url: 'https://ev-database.org/car/1194/Tesla-Model-S-Long-Range'
+        url: 'https://ev-database.org/car/1323/Tesla-Model-S-Long-Range-Plus'
       },
       {
         id: 'ts_performance',
         label: 'Tesla Model S Performance',
         category: 'model_s',
-        efficiency: 18.6,
+        efficiency: 18.1,
         range: {
           cold: {
             city: 495,
@@ -219,7 +232,7 @@ export default [
         },
         battery: 100,
         usableBattery: 95,
-        url: 'https://ev-database.org/car/1207/Tesla-Model-S-Performance'
+        url: 'https://ev-database.org/car/1324/Tesla-Model-S-Performance'
       }
     ]
   },
@@ -230,9 +243,9 @@ export default [
     items: [
       {
         id: 'tx_long_range',
-        label: 'Tesla Model X Long Range',
+        label: 'Tesla Model X Long Range Plus',
         category: 'model_x',
-        efficiency: 20.7,
+        efficiency: 20.2,
         range: {
           cold: {
             city: 455,
@@ -252,13 +265,13 @@ export default [
         },
         battery: 100,
         usableBattery: 95,
-        url: 'https://ev-database.org/car/1198/Tesla-Model-X-Long-Range'
+        url: 'https://ev-database.org/car/1325/Tesla-Model-X-Long-Range-Plus'
       },
       {
         id: 'tx_performance',
         label: 'Tesla Model X Performance',
         category: 'model_x',
-        efficiency: 21.3,
+        efficiency: 21.1,
         range: {
           cold: {
             city: 445,
@@ -278,35 +291,9 @@ export default [
         },
         battery: 100,
         usableBattery: 95,
-        url: 'https://ev-database.org/car/1208/Tesla-Model-X-Performance'
+        url: 'https://ev-database.org/car/1326/Tesla-Model-X-Performance'
       }
     ]
-  },
-  {
-    label: 'škoda CITIGOe iV',
-    id: 'citigo',
-    image: 'cars/citigoe.jpg',
-    efficiency: 16.2,
-    range: {
-      cold: {
-        city: 200,
-        highway: 140,
-        combined: 170
-      },
-      mild: {
-        city: 310,
-        highway: 180,
-        combined: 230
-      },
-      average: 200
-    },
-    price: {
-      czk: 499900,
-      eur: 19900
-    },
-    battery: 36.8,
-    usableBattery: 32.3,
-    url: 'https://ev-database.org/car/1190/Skoda-CITIGOe-iV'
   },
   {
     label: 'Hyundai IONIQ Electric',
@@ -435,6 +422,19 @@ export default [
         label: 'Audi e-tron Sportback 55 quattro'
       }
     ]
+  },
+  {
+    label: 'DS 3 Crossback E-Tense',
+    id: 'ds3',
+    image: 'cars/ds3.jpg',
+    price: {
+      czk: 995000,
+      eur: 34990
+    },
+    url: 'https://ev-database.org/car/1148/DS-3-Crossback-E-Tense',
+    efficiency: 18,
+    battery: 45,
+    usableBattery: 50
   },
   {
     label: 'Nissan LEAF e ',
@@ -567,5 +567,44 @@ export default [
     battery: 50.0,
     usableBattery: 45.0,
     url: 'https://ev-database.org/car/1168/Peugeot-e-208'
+  },
+  {
+    label: 'Opel Corsa-e',
+    id: 'opel-corsa-e',
+    image: 'cars/corsa.jpg',
+    price: {
+      czk: 759990,
+      eur: 28490
+    },
+    efficiency: 16.4,
+    battery: 50.0,
+    usableBattery: 45.0,
+    url: 'https://ev-database.org/car/1192/Opel-Corsa-e'
+  },
+  {
+    label: 'Škoda CITIGOe iV',
+    id: 'citigo',
+    image: 'cars/citigoe.jpg',
+    efficiency: 16.2,
+    range: {
+      cold: {
+        city: 200,
+        highway: 140,
+        combined: 170
+      },
+      mild: {
+        city: 310,
+        highway: 180,
+        combined: 230
+      },
+      average: 200
+    },
+    price: {
+      czk: 499900,
+      eur: 19900
+    },
+    battery: 36.8,
+    usableBattery: 32.3,
+    url: 'https://ev-database.org/car/1190/Skoda-CITIGOe-iV'
   }
 ]
