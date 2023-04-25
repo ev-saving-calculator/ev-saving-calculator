@@ -86,23 +86,23 @@ function CarInfo(props) {
         {props.data.image && <CardMedia className={classes.cover} image={props.data.image} title="" />}
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="subtitle1" color="initial">
+            <Typography component="h3" variant="subtitle1" color="initial">
               {props.data.label}
             </Typography>
             <Typography variant="subtitle2" color="initial">
               Cena:{' '}
               <b>
-                {(vat ? price : Math.round(priceWithoutVat(versionConfig.vat, price))).toLocaleString()}{' '}
+                {(vat ? price : Math.round(priceWithoutVat(versionConfig.vat, price))).toLocaleString()}&nbsp;
                 {versionConfig.priceUnit}
               </b>
             </Typography>
             <Typography variant="subtitle2" color="initial">
-              Baterie: <b>{data.battery.toLocaleString()} kWh</b>, Spotřeba:{' '}
-              <b>{data.efficiency.toLocaleString()} kWh</b>
+              Baterie: <b>{data.battery.toLocaleString()}&nbsp;kWh</b>, Spotřeba:{' '}
+              <b>{data.efficiency.toLocaleString()}&nbsp;kWh</b>
             </Typography>
             {!props.custom && (
               <Typography variant="subtitle2" color="initial">
-                Dojezd: <b>{Math.round((data.usableBattery / data.efficiency) * 100)} km</b>
+                Dojezd: <b>{Math.round((data.usableBattery / data.efficiency) * 100)}&nbsp;km</b>
               </Typography>
             )}
 

@@ -519,8 +519,8 @@ export default [
       {
         id: 'e-soul-100',
         price: {
-          czk: 1149980,
-          eur: 35690
+          czk: 1099980,
+          eur: 34490
         },
         efficiency: 17,
         battery: 42,
@@ -532,13 +532,44 @@ export default [
         id: 'e-soul-150',
         price: {
           czk: 1199980,
-          eur: 39490
+          eur: 38290
+        },
+        efficiency: 17.5,
+        battery: 67.1,
+        usableBattery: 64,
+        url: 'https://ev-database.org/car/1288/Kia-e-Soul-64-kWh',
+        label: 'Kia e-Soul 150 kW'
+      }
+    ]
+  },
+  {
+    label: 'Kia e-Niro',
+    id: 'eniro',
+    image: 'cars/eniro.jpg',
+    items: [
+      {
+        id: 'e-niro-100',
+        price: {
+          czk: 1099980,
+          eur: 35290
+        },
+        efficiency: 14.7,
+        battery: 42,
+        usableBattery: 39.2,
+        url: 'https://ev-database.org/car/1339/Kia-e-Niro-39-kWh',
+        label: 'Kia e-Niro 100 kW'
+      },
+      {
+        id: 'e-niro-150',
+        price: {
+          czk: 1199980,
+          eur: 39790
         },
         efficiency: 17.3,
         battery: 67.1,
         usableBattery: 64,
-        url: 'https://ev-database.org/car/1154/Kia-e-Soul-64-kWh',
-        label: 'Kia e-Soul 150 kW'
+        url: 'https://ev-database.org/car/1338/Kia-e-Niro-64-kWh',
+        label: 'Kia e-Niro 150 kW'
       }
     ]
   },
@@ -567,6 +598,19 @@ export default [
     battery: 50.0,
     usableBattery: 45.0,
     url: 'https://ev-database.org/car/1168/Peugeot-e-208'
+  },
+  {
+    label: 'Peugeot e-2008',
+    id: 'peugeot e2008',
+    image: 'cars/e-2008.jpg',
+    price: {
+      czk: 935000,
+      eur: 34556
+    },
+    efficiency: 18,
+    battery: 50.0,
+    usableBattery: 45.0,
+    url: 'https://ev-database.org/car/1206/Peugeot-e-2008-SUV'
   },
   {
     label: 'Opel Corsa-e',

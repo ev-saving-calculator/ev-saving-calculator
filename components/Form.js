@@ -9,30 +9,14 @@ import RangeForm from './RangeForm'
 import BasicForm from './BasicForm'
 import ElectricCarForm from './ElectricCarForm'
 import CommonCarForm from './CommonCarForm'
+import LoanForm from './LoanForm'
+
 
 const Form = props => {
   const { versionConfig } = props
   return (
     <Formik
-      initialValues={{
-        compareCarbonFootprint: false,
-        company: false,
-        carId: ['enyaq', 'enyaq-60'], //['model_3', 't3_range_plus'],
-        consumption: 7,
-        distanceToWork: 50,
-        workingDays: 5,
-        vat: true,
-        additionalRange: 30,
-        distance: 35000,
-        distanceType: 'static',
-        serviceElectricCustom: [],
-        serviceCommonCustom: [],
-        co2Emission: 120,
-        co2EmissionFuelTransport: '19',
-        pragueParking: 0,
-        ...versionConfig.defaultValues,
-        ...props.defaultValues
-      }}
+      initialValues={props.defaultValues}
       validationSchema={Yup.object({
         workingDays: Yup.number()
           .min(0, '')
@@ -42,9 +26,20 @@ const Form = props => {
           'sum-is-100',
           'Celkový podíl musí být 100%',
           value => value.length === 1 || value.reduce((sum, i) => sum + i.part, 0) === 100
-        )
+        ),
+        loan: Yup.object({
+          electricCar: Yup.object().test({
+            name: 'sum-is-1ll00',
+            message: 'Celkový pll musí být 100%',
+            exclusive: false,
+            test: function (value) {
+              console.log(value, this.parent)
+            }
+          })
+        })
       })}
       onSubmit={values => {
+        console.log('HELLO')
         props.onSubmit(values)
         return true
       }}
@@ -66,8 +61,16 @@ const Form = props => {
               versionConfig={versionConfig}
             />
             <CommonCarForm versionConfig={versionConfig} values={values} errors={errors} />
+            <LoanForm versionConfig={versionConfig} values={values} errors={errors} />
+
           </Grid>
-          <FormikAutoSave debounceMs={400} />
+          <FormikAutoSave
+            values={values}
+            onSave={values => {
+              props.onSubmit(values)
+            }}
+            debounceMs={400}
+          />
           <FixFields values={values} setFieldValue={setFieldValue} vat={versionConfig.vat} />
         </form>
       )}
@@ -81,4 +84,4 @@ Form.propTypes = {
   defaultValues: PropTypes.object.isRequired
 }
 
-export default Form
+export default React.memo(Form)

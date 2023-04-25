@@ -1,22 +1,29 @@
-import debounce from 'lodash.debounce'
-import { useFormikContext } from 'formik'
-import { useCallback, useEffect } from 'react'
+import React from 'react'
+import debounce from 'lodash/debounce'
+import isEqual from 'lodash/isEqual'
+import { connect } from 'formik'
 
-const FormikAutoSave = ({ debounceMs }) => {
-  const formik = useFormikContext()
-  const debouncedSubmit = useCallback(
-    debounce(
-      () =>
-        formik.submitForm(),
-      debounceMs
-    ),
-    [debounceMs, formik.submitForm]
-  )
+export default connect(
+  class FormikAutoSave extends React.Component {
+    constructor(props) {
+      super(props)
 
-  useEffect(() => {
-    debouncedSubmit()
-  }, [debouncedSubmit, formik.values])
-  return null
-}
+      this.save = debounce(() => {
+        if (!this.props.formik.isValid) {
+          return
+        }
+        this.props.onSave(this.props.values)
+      }, this.props.debounceMs)
+    }
 
-export default FormikAutoSave
+    componentDidUpdate(prevProps) {
+      if (!isEqual(prevProps.values, this.props.values)) {
+        this.save()
+      }
+    }
+
+    render() {
+      return null
+    }
+  }
+)

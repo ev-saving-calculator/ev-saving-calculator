@@ -1,5 +1,4 @@
 import payments from '../data/paymentsCz.js'
-
 import carItems from '../data/cars.js'
 
 const WEEKS_IN_YEAR = 52
@@ -82,8 +81,9 @@ const getChargingPrice = (car, values) => {
 
 export const getTotalCostElectric = (versionConfig, values, operationalCosts, years) => {
   const { grant, enableGrant, company, vat } = values
+  const loan = values.loan.active ? values.loan.electricCar : null
   const car = getCar2(values, versionConfig)
-
+  const loanPayments = loan ? loan.payment * (Math.min(12 * years, loan.months)) : 0
   const { electricPrice, powerStationPrice } = getChargingPrice(car, values)
 
   const distancePerYear = getYearRange(values)
@@ -93,16 +93,18 @@ export const getTotalCostElectric = (versionConfig, values, operationalCosts, ye
   const calcWithGrant =
     enableGrant && company && !grantOverflow(versionConfig, values) && !grantTooSmall(versionConfig, values)
 
-  const carPrice = operationalCosts
+  const carPriceWithoutGrant = vat ? rawCarPrice : priceWithoutVat(versionConfig.vat, rawCarPrice)
+  console.log(carPriceWithoutGrant)
+  /*const carPrice = operationalCosts
     ? 0
     : calcWithGrant
     ? getCarPriceWithGrant(rawCarPrice, grant, vat && company, versionConfig.vat)
-    : vat
-    ? rawCarPrice
-    : priceWithoutVat(versionConfig.vat, rawCarPrice)
+    : carPriceWithoutGrant*/
+
+  const carPrice = operationalCosts ? 0 : loan.cash
 
   const servicePrice = getServicePrice(values.serviceElectric, distancePerYear, years)
-  const complete = carPrice + years * electricPrice + powerStationPrice + servicePrice.complete
+  const complete = carPrice + years * electricPrice + powerStationPrice + servicePrice.complete + loanPayments
 
   const allItems = [
     { name: 'Pořizovací cena', price: vat ? rawCarPrice : priceWithoutVat(versionConfig.vat, rawCarPrice) },
@@ -124,7 +126,7 @@ export const getTotalCostElectric = (versionConfig, values, operationalCosts, ye
   }
 
   return {
-    complete,
+    complete: complete - getSalePrice(carPriceWithoutGrant, years),
     carPrice: carPrice,
     electric: years * electricPrice + powerStationPrice,
     service: servicePrice.complete,
@@ -171,7 +173,7 @@ export const getTotalCostCommon = (versionConfig, values, operationalCosts, year
     distance,
     pragueParking,
     serviceCommon,
-    vat
+    vat,
   } = values
   const distancePerYear = getYearRange({
     additionalRange,
@@ -180,14 +182,23 @@ export const getTotalCostCommon = (versionConfig, values, operationalCosts, year
     distanceType,
     distance
   })
+  const loan = values.loan.active ? values.loan.commonCar : null
   const fuelPricePerYear = (fuelPrice * distancePerYear * consumption) / 100
   const tollPrice = toll ? payments.toll * (years + 1) : 0
   const roadTaxPrice = roadTax && company ? getRoadTax(engineCapacity, years) : 0
   const pragueParkingPrice = pragueParking ? getpragueParkingPrice(versionConfig, pragueParking, vat, years) : 0
   const pricePerYear = fuelPricePerYear
-  const carPrice = operationalCosts ? 0 : purchasePrice
+  const carPrice = operationalCosts ? 0 : (loan ? loan.cash : purchasePrice)
   const servicePrice = getServicePrice(serviceCommon, distancePerYear, years)
-  const price = carPrice + pricePerYear * years + servicePrice.complete + roadTaxPrice + pragueParkingPrice + tollPrice
+  const loanPayments = loan ? years * loan.payment * 12 : 0
+  const price =
+    carPrice +
+    pricePerYear * years +
+    servicePrice.complete +
+    roadTaxPrice +
+    pragueParkingPrice +
+    tollPrice +
+    loanPayments
 
   const allItems = [
     { name: 'Pořizovací cena', price: purchasePrice },
@@ -204,10 +215,11 @@ export const getTotalCostCommon = (versionConfig, values, operationalCosts, year
   }
 
   return {
-    complete: price,
+    complete: price - getSalePrice(purchasePrice, years),
     carPrice,
     fuel: pricePerYear * years,
     others: roadTaxPrice + pragueParkingPrice + tollPrice,
+    loan: loanPayments,
     service: servicePrice.complete,
     allItems
   }
@@ -305,3 +317,30 @@ export const getCarbonFootprintElectricWithBattery = (versionConfig, values, ran
 export const getCarbonFootprintCommon = ({ co2Emission, co2EmissionFuelTransport }, range) => {
   return (co2Emission / 1000) * range * (1 + parseInt(co2EmissionFuelTransport) / 100)
 }
+
+export const getSalePrice = (price, year) => {
+  return 0
+  const deprectaion = [0, 11.07, 22.42, 34.12, 40.65, 47.32, 54.17, 59.17, 64.3, 69.58, 73.37, 77.27, 81.3, 84.9, 88.68, 92.73]
+  /*if (year === 5) {
+    console.log (price) 
+  }*/
+  return -(price * deprectaion[year] / 100)
+}
+
+/*
+export const getMonthlyPaymentFromInterest = (principal, _interest, payments) => {
+  var interest = _interest / 100 / 12;
+
+  // Now compute the monthly payment figure, using esoteric math.
+  var x = Math.pow(1 + interest, payments);
+  var monthly = (principal * x * interest) / (x - 1);
+
+  // Check that the result is a finite number. If so, display the results.
+  if (!isNaN(monthly) &&
+    (monthly != Number.POSITIVE_INFINITY) &&
+    (monthly != Number.NEGATIVE_INFINITY)) {
+    return round(monthly)
+  } else {
+    return 0
+  }
+}*/

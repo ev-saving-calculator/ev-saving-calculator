@@ -1,18 +1,6 @@
 import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import {
-  CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  Area,
-  AreaChart
-} from 'recharts'
-import {
   getCarbonFootprintCommon,
   getCarbonFootprintElectricWithBattery,
   getTotalCostCommon,
@@ -36,6 +24,16 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 import Grid from '@material-ui/core/Grid'
 import PriceDetailDialog from './PriceDetailDialog'
+import ResponsiveContainer from 'recharts/lib/component/ResponsiveContainer'
+import AreaChart from 'recharts/lib/chart/AreaChart'
+import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid'
+import XAxis from 'recharts/lib/cartesian/XAxis'
+import YAxis from 'recharts/lib/cartesian/YAxis'
+import Tooltip from 'recharts/lib/component/Tooltip'
+import Legend from 'recharts/lib/component/Legend'
+import Area from 'recharts/lib/cartesian/Area'
+import Line from 'recharts/lib/cartesian/Line'
+import LineChart from 'recharts/lib/chart/LineChart'
 
 const ContentPriceTooltipClassic = props => {
   const { payload, priceUnit } = props
@@ -228,7 +226,7 @@ const Charts = props => {
           electricCar.carPrice + electricCar.electric + electricCar.service
         ],
         allItemsElectric: electricCar.allItems,
-        allItemsCommon: commonCar.allItems,
+        allItemsCommon: commonCar.allItems
       })
     }
     return result

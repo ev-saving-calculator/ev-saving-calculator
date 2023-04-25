@@ -20,6 +20,12 @@ const BasicForm = props => {
   return (
     <>
       <Grid item>
+        <p>
+          Orientační kalkulačka pro porovnání nákladu na nákup a provoz <b>elektromobilu</b> a auta se <b>spalovacím motorem</b> v podmínkách České republiky.
+          Kalkulačka zatím nedokáže počítat s vozy, které mají hybridní pohon.
+        </p>
+      </Grid>
+      <Grid item>
         <Title>Zákadní údaje</Title>
       </Grid>
       <Grid item>

@@ -50,7 +50,7 @@ const AboutDialog = props => {
           </Typography>
           <div className={classes.links}>
             <Button
-              startIcon={<img src="linkedin.svg" className={classes.linkedinIcon} />}
+              startIcon={<img alt="linkeding" src="linkedin.svg" className={classes.linkedinIcon} />}
               target="_blank"
               variant="outlined"
               href="https://www.linkedin.com/in/petr-polol%C3%A1n%C3%ADk-90a506a2/">

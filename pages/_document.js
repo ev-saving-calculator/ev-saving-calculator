@@ -3,6 +3,11 @@ import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@material-ui/core/styles'
 import theme from '../src/theme'
 
+function onLoad() {
+  this.onload = null
+  this.rel = 'stylesheet'
+}
+
 export default class MyDocument extends Document {
   render() {
     return (
@@ -10,9 +15,14 @@ export default class MyDocument extends Document {
         <Head>
           {/* PWA primary color */}
           <meta name="theme-color" content={theme.palette.primary.main} />
-          <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+          <link
+            rel="preload"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+            as="style"
+            onLoad={onLoad}
+          />
           <meta name="google-site-verification" content="JL3eQMmQB_9EueAfEsqWpG_KjrSrs9d5mFD8IrDaGKY" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
           <meta name="robots" content="index,follow" />
           <meta name="author" content="Petr Pololáník" />
           <meta
@@ -20,22 +30,36 @@ export default class MyDocument extends Document {
             content="Tesla, nabíjení, kalkulačka, elektro, elektroauto, elektromobilita, úspora"
             lang="cs"
           />
-          <meta name="description" content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem." />
+          <meta
+            name="description"
+            content="Orientační kalkulačka pro porovnání nákladu na nákup a provoz elektromobilu a auta se spalovacím motorem v podmínkách České republiky."
+          />
 
           <meta property="og:type" content="website" />
           <meta property="og:url" content="https://electripe.cz/" />
           <meta property="og:title" content="Vyplatí se mi elektromobil?" />
-          <meta property="og:description" content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem." />
-          <meta property="og:image" content="" />
+          <meta
+            property="og:description"
+            content="Orientační kalkulačka pro porovnání nákladu na nákup a provoz elektromobilu a auta se spalovacím motorem v podmínkách České republiky."
+          />
+          <meta property="og:image" content="https://electripe.cz/screenshot.png" />
 
           <meta property="twitter:card" content="summary_large_image" />
           <meta property="twitter:url" content="https://electripe.cz/" />
           <meta property="twitter:title" content="Vyplatí se mi elektromobil?" />
           <meta
             property="twitter:description"
-            content="Vyplatí se mi elektromobil? Kalkulačka úspor s elektromobilem."
+            content="Orientační kalkulačka pro porovnání nákladu na nákup a provoz elektromobilu a auta se spalovacím motorem v podmínkách České republiky."
           />
-          <meta property="twitter:image" content="" />
+          <meta property="twitter:image" content="https://electripe.cz/screenshot.png" />
+
+          <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+          <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+          <link rel="manifest" href="/site.webmanifest" />
+          <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#353535" />
+          <meta name="msapplication-TileColor" content="#da532c" />
+          <meta name="theme-color" content="#ffffff" />
         </Head>
         <body>
           <Main />

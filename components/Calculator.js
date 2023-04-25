@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import Container from '@material-ui/core/Container'
@@ -14,12 +14,13 @@ import Button from '@material-ui/core/Button'
 import AboutDialog from '../components/AboutDialog'
 import IconButton from '@material-ui/core/IconButton'
 import InfoIcon from '@material-ui/icons/Info'
-import { useWindowHeight } from '@react-hook/window-size'
+import { useWindowHeight, useWindowWidth } from "@react-hook/window-size"
 import useComponentSize from '@rehooks/component-size'
 import CalcInfoDialog from './CalcInfoDialog'
 import cn from 'classnames'
 import MoreInformationDialog from '../components/MoreInformationDialog'
 import version from '../data/version'
+import { getCar2 } from "../src/utils";
 
 const MAX_WIDTH = 1420
 
@@ -114,13 +115,52 @@ const useStyles = makeStyles(theme => ({
 
 const Calculator = props => {
   const classes = useStyles()
+  const versionConfig = version[props.versionId]
+
+  const defaultValues = useMemo(
+    () => ({
+      compareCarbonFootprint: false,
+      loan: {
+        active: true,
+        enterPayment: true,
+        electricCar: {
+          cash: 700000,
+          payment: 11975,
+          months: 60,
+        },
+        commonCar: {
+          cash: 700000,
+          payment: 0,
+          months: 60,
+        }
+      },
+      company: false,
+      carId: ['enyaq', 'enyaq-60'], // ['model_3', 't3_range_plus'],
+      consumption: 7,
+      distanceToWork: 50,
+      workingDays: 5,
+      vat: true,
+      additionalRange: 30,
+      distance: 35000,
+      distanceType: 'static',
+      serviceElectricCustom: [],
+      serviceCommonCustom: [],
+      co2Emission: 120,
+      co2EmissionFuelTransport: '19',
+      pragueParking: 0,
+      ...versionConfig.defaultValues,
+      ...props.shareValues
+    }),
+    []
+  )
   const windowHeight = useWindowHeight()
+  const windowsWidth = useWindowWidth()
   const ref = useRef(null)
   const { height } = useComponentSize(ref)
-  const [values, setValue] = useState(null)
+  const [values, setValue] = useState(defaultValues)
   const [showMoreInfoDialog, setShowMoreInfoDialog] = useState(false)
   const [showAboutDialog, setShowAboutDialog] = useState(false)
-  const handleSubmitForm = values => setValue(values)
+  const handleSubmitForm = useCallback(values => setValue(values), [])
 
   const handleClickShowMore = () => setShowMoreInfoDialog(true)
   const handleCloseShowMore = () => setShowMoreInfoDialog(false)
@@ -130,19 +170,17 @@ const Calculator = props => {
 
   const enableSticky = windowHeight - 10 > height && height > 0
 
-  const versionConfig = version[props.versionId]
-
+  const car = getCar2(values, versionConfig)
 
   return (
-    <div>
+    <>
       <Head>
-        <title>Vyplatí se mi elektromobil?</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Vyplatí se mi elektromobil? {(car && car.label) ? car.label : ''}</title>
       </Head>
       <AppBar position="static">
         <Toolbar variant="dense">
           <Container maxWidth={'xl'} classes={{ root: classes.header }}>
-            <img src={'charging.svg'} className={classes.icon} />
+            <img alt="charging" src={'charging.svg'} className={classes.icon} />
             <Typography variant="h6" component="h1" className={classes.title}>
               Vyplatí se mi elektromobil?
             </Typography>
@@ -167,7 +205,7 @@ const Calculator = props => {
                 vat={21}
                 onSubmit={handleSubmitForm}
                 grant
-                defaultValues={props.shareValues || {}}
+                defaultValues={defaultValues}
                 versionConfig={versionConfig}
                 renderRegionInfo={props.renderRegionInfo}
               />
@@ -177,7 +215,13 @@ const Calculator = props => {
             <div ref={ref} className={cn(enableSticky && classes.paperSticky)}>
               {values && values.carId && (
                 <Paper className={cn(classes.paper)} square>
-                  <Charts infoComponent={CalcInfoDialog} renderCo2Info={props.renderCo2Info}  vat={21} values={values} versionConfig={versionConfig} />
+                  <Charts
+                    infoComponent={CalcInfoDialog}
+                    renderCo2Info={props.renderCo2Info}
+                    vat={21}
+                    values={values}
+                    versionConfig={versionConfig}
+                  />
                 </Paper>
               )}
             </div>
@@ -186,7 +230,7 @@ const Calculator = props => {
       </Container>
       <AboutDialog open={showAboutDialog} onClose={handleCloseAbout} />
       <MoreInformationDialog open={showMoreInfoDialog} onClose={handleCloseShowMore} />
-    </div>
+    </>
   )
 }
 
